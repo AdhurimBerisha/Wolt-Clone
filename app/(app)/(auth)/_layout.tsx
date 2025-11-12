@@ -40,7 +40,7 @@ const Layout = () => {
           sheetCornerRadius: 16,
           sheetGrabberVisible: true,
           contentStyle: {
-            backgroundColor: "#fff",
+            backgroundColor: Colors.background,
           },
           headerRight: () => (
             <TouchableOpacity
