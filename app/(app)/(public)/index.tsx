@@ -13,9 +13,10 @@ import {
   View,
 } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
+
 export default function Index() {
   const openWebBrowser = () => {
-    Linking.openURL("http://google.com");
+    Linking.openURL("https://galaxies.dev");
   };
   return (
     <View style={styles.container}>
@@ -40,6 +41,7 @@ export default function Index() {
           }}
         />
       </View>
+
       <View style={styles.contentContainer}>
         <Image
           source={require("@/assets/images/wolt-logo.png")}
@@ -49,7 +51,7 @@ export default function Index() {
           Almost everything delivered
         </Animated.Text>
 
-        {/* Login bttons */}
+        {/* Login buttons */}
         <View style={styles.buttonContainer}>
           <Animated.View entering={FadeInDown.delay(100)}>
             <AppleAuthButton />
@@ -73,7 +75,7 @@ export default function Index() {
           <Text style={styles.privacyText}>
             Please visit{" "}
             <Text style={styles.privacyLink} onPress={openWebBrowser}>
-              Wolf Privacy Statement
+              Wolt Privacy Statement
             </Text>{" "}
             to learn about personal data processing at Wolt.
           </Text>
