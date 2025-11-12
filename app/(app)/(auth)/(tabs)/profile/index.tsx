@@ -12,6 +12,8 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 70,
+    marginLeft: 17,
   },
 });
 export default Profile;
