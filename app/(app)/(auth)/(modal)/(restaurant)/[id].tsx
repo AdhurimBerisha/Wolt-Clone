@@ -1,6 +1,6 @@
 import { MenuItem } from "@/components/MenuItem";
 import RestaurantDetailsHeader from "@/components/RestaurantDetailsHeader";
-import ViewOrderButton from "@/components/ViewOrderButton";
+import ViewOrderButton from "@/components/buttons/ViewOrderButton";
 import { Colors } from "@/constants/theme";
 import type { Dish } from "@/data/restaurant_menu";
 import { useMenu } from "@/hooks/useMenu";
