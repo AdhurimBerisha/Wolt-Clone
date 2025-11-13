@@ -1,11 +1,14 @@
 import { Colors } from "@/constants/theme";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Link } from "expo-router";
+import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
   Extrapolation,
   interpolate,
+  runOnJS,
   SharedValue,
+  useAnimatedReaction,
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,6 +22,20 @@ const SCOLL_THRESHOLD = 60;
 
 const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
   const insets = useSafeAreaInsets();
+  const [header1PointerEvents, setHeader1PointerEvents] = useState<
+    "auto" | "none"
+  >("auto");
+  const [header2PointerEvents, setHeader2PointerEvents] = useState<
+    "auto" | "none"
+  >("none");
+
+  useAnimatedReaction(
+    () => scrollOffset.value > SCOLL_THRESHOLD * 0.5,
+    (isHeader2Active) => {
+      runOnJS(setHeader1PointerEvents)(isHeader2Active ? "none" : "auto");
+      runOnJS(setHeader2PointerEvents)(isHeader2Active ? "auto" : "none");
+    }
+  );
 
   const header1Style = useAnimatedStyle(() => {
     const opacity = interpolate(
@@ -81,7 +98,10 @@ const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
       style={[styles.headerContainer, shadowStyle, { paddingTop: insets.top }]}
     >
       {/* Header 1 */}
-      <Animated.View style={[styles.header1, header1Style]}>
+      <Animated.View
+        pointerEvents={header1PointerEvents}
+        style={[styles.header1, header1Style]}
+      >
         <Link href={"/(app)/(auth)/(modal)/location"} asChild>
           <TouchableOpacity style={styles.locationButton}>
             <View style={styles.locationButtonIcon}>
@@ -98,14 +118,19 @@ const RestaurantHeader = ({ title, scrollOffset }: RestaurantHeaderProps) => {
               <Ionicons name="filter" size={20} />
             </TouchableOpacity>
           </Link>
-          <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="map-outline" size={20} />
-          </TouchableOpacity>
+          <Link href={"/(app)/(auth)/(modal)/map"} asChild>
+            <TouchableOpacity style={styles.iconButton}>
+              <Ionicons name="map-outline" size={20} />
+            </TouchableOpacity>
+          </Link>
         </View>
       </Animated.View>
 
       {/* Header 2 */}
-      <Animated.View style={[styles.header2, header2Style]}>
+      <Animated.View
+        pointerEvents={header2PointerEvents}
+        style={[styles.header2, header2Style]}
+      >
         <View style={styles.centerContent}>
           <Text style={styles.titleSmall}>{title}</Text>
           <Link href={"/(app)/(auth)/(modal)/location"} asChild>
@@ -193,7 +218,7 @@ const styles = StyleSheet.create({
   },
   titleSmall: {
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: 700,
     marginBottom: 2,
   },
   locationSmall: {
