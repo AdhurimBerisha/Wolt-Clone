@@ -2,9 +2,11 @@ import AppleAuthButton from "@/components/auth/AppleAuthButton";
 import GoogleAuthButton from "@/components/auth/GoogleAuthButton";
 import SmoothInfiniteScroll from "@/components/SmoothInfiniteScroll";
 import { Colors, Fonts } from "@/constants/theme";
+import * as Sentry from "@sentry/react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 import {
+  Button,
   Image,
   Linking,
   StyleSheet,
@@ -67,6 +69,13 @@ export default function Index() {
             </Link>
           </Animated.View>
         </View>
+
+        <Button
+          title="Try!"
+          onPress={() => {
+            Sentry.captureException(new Error("First error"));
+          }}
+        />
 
         <Animated.View
           style={styles.privacyContainer}
