@@ -1,11 +1,12 @@
 import { MenuItem } from "@/components/MenuItem";
+import RestaurantDetailsHeader from "@/components/RestaurantDetailsHeader";
 import { Colors } from "@/constants/theme";
 import type { Dish } from "@/data/restaurant_menu";
 import { useMenu } from "@/hooks/useMenu";
 import { useRestaurant } from "@/hooks/useRestaurants";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -29,6 +30,8 @@ import Svg, { Path } from "react-native-svg";
 
 const { width } = Dimensions.get("window");
 const IMAGE_HEIGHT = 300;
+const STICKY_THRESHOLD_START = 260;
+const STICKY_THRESHOLD_END = 320;
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList<Dish>);
 
@@ -93,6 +96,54 @@ const Page = () => {
     };
   });
 
+  const handleCategoryPress = (index: number) => {
+    setActiveCategory(index);
+    sectionListRef.current?.scrollToLocation({
+      sectionIndex: index,
+      itemIndex: 0,
+      animated: true,
+      viewOffset: insets.top + 100,
+    });
+
+    scrollCategoryTabIntoView(index);
+  };
+
+  const scrollCategoryTabIntoView = (index: number) => {
+    categoryScrollRef?.current?.scrollTo({
+      x: index * categroyTabWidth - width / 2 + categroyTabWidth / 2,
+      animated: true,
+    });
+  };
+
+  const onViewableItemsChanged = useCallback(
+    ({ viewableItems }: any) => {
+      if (viewableItems.length > 0) {
+        const firstVisibleSection = viewableItems[0].section;
+        const sectionIndex = sections.findIndex(
+          (s) => s.title === firstVisibleSection.title
+        );
+        if (sectionIndex !== -1 && sectionIndex !== activeCategory) {
+          setActiveCategory(sectionIndex);
+          scrollCategoryTabIntoView(sectionIndex);
+        }
+      }
+    },
+    [sections, activeCategory]
+  );
+
+  const stickyTabsStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      scrollOffset.value,
+      [STICKY_THRESHOLD_START, STICKY_THRESHOLD_END],
+      [0, 1],
+      Extrapolation.CLAMP
+    );
+
+    return {
+      opacity,
+    };
+  });
+
   if (restaurantLoading || menuLoading) {
     return (
       <View>
@@ -116,9 +167,46 @@ const Page = () => {
         resizeMode={"cover"}
         source={restaurant.image!}
       />
-
       <Animated.View style={[styles.whiteOverlay, overlayStyle]} />
-
+      <View style={{ zIndex: 10 }}>
+        <RestaurantDetailsHeader scrollOffset={scrollOffset} />
+      </View>
+      <Animated.View
+        style={[
+          styles.stickyTabsOverlay,
+          stickyTabsStyle,
+          { top: insets.top + 64 },
+        ]}
+      >
+        <View style={styles.categoryTabsContainer}>
+          <ScrollView
+            horizontal
+            ref={categoryScrollRef}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoryTabs}
+          >
+            {menu?.map((category, index) => (
+              <TouchableOpacity
+                key={`sticky-${index}`}
+                onPress={() => handleCategoryPress(index)}
+                style={[
+                  styles.categoryTab,
+                  activeCategory === index && styles.categoryTabActive,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.categoryTabText,
+                    activeCategory === index && styles.categoryTabTextActive,
+                  ]}
+                >
+                  {category.category}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </Animated.View>
       <AnimatedSectionList
         ref={sectionListRef}
         sections={sections}
@@ -126,6 +214,7 @@ const Page = () => {
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
         stickySectionHeadersEnabled={false}
+        onViewableItemsChanged={onViewableItemsChanged}
         renderSectionHeader={({ section }: { section: any }) => (
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>{section.title}</Text>
@@ -327,6 +416,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#f0f9ff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  stickyTabsOverlay: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    zIndex: 100,
+    backgroundColor: "#fff",
+  },
+  categoryTabsContainer: {
+    boxShadow: "0px 4px 2px -2px rgba(0, 0, 0, 0.1)",
+  },
+  categoryTabs: {
+    paddingTop: 12,
+    paddingHorizontal: 16,
+    gap: 20,
+  },
+  categoryTab: {
+    paddingBottom: 12,
+  },
+  categoryTabActive: {
+    borderBottomWidth: 3,
+    borderBottomColor: Colors.secondary,
+  },
+  categoryTabText: {
+    fontSize: 15,
+    color: Colors.muted,
+    fontWeight: 500,
+  },
+  categoryTabTextActive: {
+    color: Colors.secondary,
+    fontWeight: 600,
   },
 });
 export default Page;
