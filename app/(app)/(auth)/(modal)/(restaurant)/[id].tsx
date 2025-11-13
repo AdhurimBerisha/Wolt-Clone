@@ -251,7 +251,7 @@ const Page = () => {
               <View style={styles.restaurantInfo}>
                 <Text style={styles.restaurantName}>{restaurant.name}</Text>
                 <View style={styles.infoRow}>
-                  <Ionicons name="time-outline" size={16} color="#666" />
+                  <Ionicons name="star-outline" size={16} color="#666" />
                   <Text style={styles.infoText}>{restaurant.rating}</Text>
                   <Text style={styles.infoDot}>•</Text>
                   <Text style={styles.infoText}>Open until 21:30</Text>
