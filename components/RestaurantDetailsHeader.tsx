@@ -1,7 +1,14 @@
 import { Colors } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -109,9 +116,45 @@ const RestaurantDetailsHeader = ({ scrollOffset }: RestaurantHeaderProps) => {
         </Animated.View>
 
         <Animated.View style={[styles.iconButton, buttonStyle2]}>
-          <Ionicons name="ellipsis-horizontal" size={24} />
+          <TouchableOpacity
+            onPress={() => SheetManager.show("restaurant-menu")}
+            style={styles.iconButtonTouchable}
+          >
+            <Ionicons name="ellipsis-horizontal" size={24} />
+          </TouchableOpacity>
         </Animated.View>
       </View>
+
+      <ActionSheet id="restaurant-menu">
+        <View style={styles.actionSheetContent}>
+          <TouchableOpacity
+            style={styles.actionSheetButton}
+            onPress={() => {
+              SheetManager.hide("restaurant-menu");
+            }}
+          >
+            <Text style={styles.actionSheetButtonText}>More info</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.actionSheetButton}
+            onPress={() => {
+              SheetManager.hide("restaurant-menu");
+            }}
+          >
+            <Text style={styles.actionSheetButtonText}>Add to favorites</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.actionSheetButton}
+            onPress={() => {
+              SheetManager.hide("restaurant-menu");
+            }}
+          >
+            <Text style={styles.actionSheetButtonText}>Share venue</Text>
+          </TouchableOpacity>
+        </View>
+      </ActionSheet>
     </Animated.View>
   );
 };
@@ -161,6 +204,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     boxShadow: "0px 4px 2px -2px rgba(0, 0, 0, 0.1)",
+  },
+  iconButtonTouchable: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  actionSheetContent: {
+    padding: 20,
+    gap: 12,
+  },
+  actionSheetButton: {
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    backgroundColor: Colors.light,
+  },
+  actionSheetButtonText: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#000",
   },
 });
 export default RestaurantDetailsHeader;

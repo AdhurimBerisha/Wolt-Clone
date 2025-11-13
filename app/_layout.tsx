@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SheetProvider } from "react-native-actions-sheet";
 
 Sentry.init({
   dsn: "https://ad668a2a0172932aeb48b2685eb2ab0c@o4510357860646912.ingest.de.sentry.io/4510357864644688",
@@ -48,7 +49,9 @@ export default Sentry.wrap(function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
-        <Slot />
+        <SheetProvider>
+          <Slot />
+        </SheetProvider>
       </QueryClientProvider>
     </GestureHandlerRootView>
   );
