@@ -1,5 +1,6 @@
 import { MenuItem } from "@/components/MenuItem";
 import RestaurantDetailsHeader from "@/components/RestaurantDetailsHeader";
+import ViewOrderButton from "@/components/ViewOrderButton";
 import { Colors } from "@/constants/theme";
 import type { Dish } from "@/data/restaurant_menu";
 import { useMenu } from "@/hooks/useMenu";
@@ -42,7 +43,7 @@ const Page = () => {
   const categoryScrollRef = useRef<ScrollView>(null);
   const scrollOffset = useSharedValue(0);
   const insets = useSafeAreaInsets();
-  const categroyTabWidth = 100;
+  const categoryTabWidth = 100;
 
   // Fetch data
   const { data: restaurant, isLoading: restaurantLoading } = useRestaurant(
@@ -110,7 +111,7 @@ const Page = () => {
 
   const scrollCategoryTabIntoView = (index: number) => {
     categoryScrollRef?.current?.scrollTo({
-      x: index * categroyTabWidth - width / 2 + categroyTabWidth / 2,
+      x: index * categoryTabWidth - width / 2 + categoryTabWidth / 2,
       animated: true,
     });
   };
@@ -296,6 +297,8 @@ const Page = () => {
           </>
         }
       />
+
+      <ViewOrderButton restaurant={restaurant} />
     </View>
   );
 };
