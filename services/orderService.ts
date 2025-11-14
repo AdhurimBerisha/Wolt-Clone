@@ -1,7 +1,7 @@
-// import type { CartItem } from '@/hooks/use-cartstore';
+import type { CartItem } from "@/hooks/use-cartstore";
 
 export interface OrderData {
-  // items: CartItem[];
+  items: CartItem[];
   restaurantId: string;
   deliveryMode: "delivery" | "pickup";
   deliveryAddress?: string;
