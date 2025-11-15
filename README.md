@@ -40,7 +40,7 @@ A feature-rich React Native clone of the Wolt food delivery app, showcasing mode
    npx expo prebuild
    ```
 
-   3. Run the app
+4. Run the app
    ```bash
    npx expo run:android/ios
    ```
