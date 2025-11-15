@@ -1,7 +1,5 @@
 # Wolt Clone
 
-<img src="./CourseCraft.png" alt="CourseCraft App" width="300"/>
-
 A feature-rich React Native clone of the Wolt food delivery app, showcasing modern mobile development practices with React Native, Expo, and TypeScript.
 
 ## Features
