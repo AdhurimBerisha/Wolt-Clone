@@ -1,8 +1,11 @@
 # Wolt Clone
 
+<img src="./WoltClone.png" alt="Wolt Clone App" width="300"/>
+
 A feature-rich React Native clone of the Wolt food delivery app, showcasing modern mobile development practices with React Native, Expo, and TypeScript.
 
 ## Features
+
 - User Authentication: Apple and Google sign-in integration
 - Restaurant Discovery: Browse restaurants and stores with beautiful UI
 - Search & Filter: Find exactly what you're looking for with advanced filters
@@ -15,6 +18,7 @@ A feature-rich React Native clone of the Wolt food delivery app, showcasing mode
 - Tab Navigation: Bottom tabs for easy navigation between sections
 
 ## Tech Stack
+
 - Expo Router - File-based routing and navigation
 - React Native Reanimated - Smooth animations and transitions
 - React Native Gesture Handler - Touch interactions
@@ -24,20 +28,22 @@ A feature-rich React Native clone of the Wolt food delivery app, showcasing mode
 - MMKV - The fastest key/value storage for React Native
 - Sentry - Error tracking and performance monitoring
 
-
 ## Installation
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/AdhurimBerisha/Wolt-Clone.git
    ```
 
 2. Install dependencies
+
    ```bash
      npm install
    ```
 
 3. Prebuild the native code
+
    ```bash
    npx expo prebuild
    ```
