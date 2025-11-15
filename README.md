@@ -33,7 +33,9 @@ A feature-rich React Native clone of the Wolt food delivery app, showcasing mode
    ```
 
 2. Install dependencies
-   npm install
+   ```bash
+  npm install
+   ```
 
 3. Prebuild the native code
    ```bash
